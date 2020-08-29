@@ -1,5 +1,7 @@
 package domowka4;
 
+import java.util.Random;
+
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
@@ -31,7 +33,16 @@ public class GateKeeperAgent extends Agent {
 			public void action() {
 				ACLMessage msg = receive();
 				if (msg != null) {
-					System.out.println("serve customers");
+					System.out.println(getLocalName() + ": " + "I have been asked for reservation!");
+					ACLMessage resp = msg.createReply();
+					Random r = new Random();
+					int isAvailable = r.nextInt(2);
+					if (isAvailable == 1) {
+						resp.setContent("available");
+					} else {
+						resp.setContent("available");
+					}
+					send(resp);
 				} else {
 					block();
 				}
@@ -69,9 +80,9 @@ public class GateKeeperAgent extends Agent {
 	}
 
 	private void readArguments() {
-		String[] args = (String[])getArguments();
-		cuisine = args[0];
-		restaurantName = args[1];
+		Object[] args = getArguments();
+		cuisine = (String)args[0];
+		restaurantName = (String)args[1];
 	}
 
 	@Override
